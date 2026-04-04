@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kätteln Quant MA200</title>
+<style>
+  :root { --text:#1a1a18; --sec:#5f5e5a; --ter:#888780; --bg:#fff; --bg2:#f5f4ef; --border:rgba(0,0,0,0.1); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); }
+
+  #lock { position:fixed; inset:0; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999; }
+  #lock h1 { font-size:22px; font-weight:500; margin-bottom:8px; }
+  #lock p { font-size:14px; color:var(--sec); margin-bottom:24px; }
+  #lock input { width:220px; padding:10px 14px; border:1px solid var(--border); border-radius:8px; font-size:15px; margin-bottom:12px; outline:none; }
+  #lock button { width:220px; padding:10px; background:#1a1a18; color:#fff; border:none; border-radius:8px; font-size:14px; cursor:pointer; }
+  #lock .err { font-size:13px; color:#a32d2d; margin-top:8px; display:none; }
+
+  header { border-bottom:1px solid var(--border); padding:18px 32px; display:flex; align-items:center; justify-content:space-between; }
+  header .logo { display:flex; align-items:center; gap:14px; }
+  header .logo img { width:40px; height:40px; border-radius:50%; }
+  header .logo h1 { font-size:17px; font-weight:500; }
+  header .logo p { font-size:12px; color:var(--sec); }
+  header nav a { font-size:13px; color:var(--sec); text-decoration:none; margin-left:20px; }
+  header nav a:hover { color:var(--text); }
+
+  main { max-width:960px; margin:0 auto; padding:40px 24px 80px; }
+
+  .meta { display:flex; align-items:center; gap:16px; margin-bottom:32px; font-size:13px; color:var(--ter); }
+  .regime { font-weight:500; font-size:13px; padding:3px 10px; border-radius:99px; background:var(--bg2); }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:36px; }
+  .kpi { background:var(--bg2); border-radius:10px; padding:16px; }
+  .kpi-label { font-size:11px; color:var(--ter); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; }
+  .kpi-val { font-size:22px; font-weight:500; }
+
+  .signals { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px; }
+  .signal-box { border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .signal-box h3 { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ter); margin-bottom:12px; }
+  .ticker { font-size:14px; font-weight:500; padding:6px 0; border-bottom:1px solid var(--border); }
+  .ticker:last-child { border-bottom:none; }
+  .buy h3 { color:#2d6e2d; }
+  .sell h3 { color:#a32d2d; }
+  .hold h3 { color:#3c3489; }
+
+  .chart-wrap { background:var(--bg2); border-radius:10px; padding:24px; margin-bottom:36px; }
+  .chart-wrap h2 { font-size:15px; font-weight:500; margin-bottom:4px; }
+  .chart-wrap p { font-size:13px; color:var(--ter); margin-bottom:20px; }
+  .chart-container { position:relative; height:280px; }
+
+  .legend { display:flex; gap:20px; font-size:12px; color:var(--sec); margin-top:12px; }
+  .leg { display:flex; align-items:center; gap:6px; }
+  .leg-dot { width:10px; height:10px; border-radius:2px; }
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <h1>Kätteln Quant</h1>
+  <p>Ange lösenord för att fortsätta</p>
+  <input type="password" id="pw" placeholder="Lösenord" onkeydown="if(event.key==='Enter')check()"/>
+  <button onclick="check()">Logga in</button>
+  <div class="err" id="err">Fel lösenord</div>
+</div>
+
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="Kätteln" onerror="this.style.display='none'"/>
+    <div>
+      <h1>Kätteln Quant MA200</h1>
+      <p>Systematisk kvantmodell · OMXS Large &amp; Mid Cap</p>
+    </div>
+  </div>
+  <nav>
+    <a href="index.html">Signaler</a>
+    <a href="manual.html">Manual</a>
+  </nav>
+</header>
+
+<main>
+  <div class="meta">
+    <span>Uppdaterad: 2026-04-04 07:47</span>
+    <span class="regime" style="color:#2d6e2d;">BULL</span>
+    <span>Universum: 271 bolag</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Portföljvärde</div><div class="kpi-val">—</div></div>
+    <div class="kpi"><div class="kpi-label">Veckans avk.</div><div class="kpi-val">—</div></div>
+    <div class="kpi"><div class="kpi-label">Total avk.</div><div class="kpi-val">—</div></div>
+    <div class="kpi"><div class="kpi-label">CAGR (realiserad)</div><div class="kpi-val">—</div></div>
+  </div>
+
+  <div class="signals">
+    <div class="signal-box buy">
+      <h3>Köp</h3>
+      <span style="color:#888">Inga</span>
+    </div>
+    <div class="signal-box sell">
+      <h3>Sälj</h3>
+      <span style="color:#888">Inga</span>
+    </div>
+    <div class="signal-box hold">
+      <h3>Behåll</h3>
+      <div class="ticker">ATT.ST</div><div class="ticker">BOL.ST</div><div class="ticker">CLA-B.ST</div><div class="ticker">FMM-B.ST</div><div class="ticker">HANZA.ST</div><div class="ticker">HOFI.ST</div><div class="ticker">LUG.ST</div><div class="ticker">RVRC.ST</div><div class="ticker">SAND.ST</div><div class="ticker">SCST.ST</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <h2>Portföljutveckling</h2>
+    <p>Verkligt portföljvärde vs OMXSPI (normaliserad till samma startvärde)</p>
+    <div class="chart-container">
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#534AB7;"></div>Portfölj</div>
+      <div class="leg"><div class="leg-dot" style="background:#B4B2A9;"></div>OMXSPI</div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const PW = "katteln2026";
+function check() {
+  if (document.getElementById("pw").value === PW) {
+    document.getElementById("lock").style.display = "none";
+    sessionStorage.setItem("auth", "1");
+  } else {
+    document.getElementById("err").style.display = "block";
+  }
+}
+if (sessionStorage.getItem("auth") === "1") {
+  document.getElementById("lock").style.display = "none";
+}
+
+const d = {"labels": [], "portfolio": [], "index": []};
+if (d.labels.length > 0) {
+  new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+      labels: d.labels,
+      datasets: [
+        { label:"Portfölj", data:d.portfolio, borderColor:"#7F77DD",
+           backgroundColor:"rgba(127,119,221,0.08)", borderWidth:2,
+           pointRadius:2, tension:0.3, fill:true },
+        { label:"OMXSPI", data:d.index, borderColor:"#B4B2A9",
+           backgroundColor:"transparent", borderWidth:2,
+           pointRadius:0, tension:0.3, borderDash:[4,3] }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false },
+        tooltip:{ callbacks:{ label: ctx => " " + ctx.dataset.label + ": " + Math.round(ctx.parsed.y).toLocaleString("sv-SE") + " kr" } } },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ color:"#888780", font:{ size:11 }, maxTicksLimit:12, maxRotation:0 } },
+        y:{ grid:{ color:"rgba(136,135,128,0.15)" }, border:{ display:false },
+             ticks:{ color:"#888780", font:{ size:11 }, callback: v => Math.round(v/1000) + "k" } }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
