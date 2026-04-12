@@ -79,36 +79,36 @@
 
 <main>
   <div class="meta">
-    <span>Uppdaterad: 2026-04-04 07:47</span>
+    <span>Uppdaterad: 2026-04-12 16:07</span>
     <span class="regime" style="color:#2d6e2d;">BULL</span>
     <span>Universum: 271 bolag</span>
   </div>
 
   <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Portföljvärde</div><div class="kpi-val">—</div></div>
     <div class="kpi"><div class="kpi-label">Veckans avk.</div><div class="kpi-val">—</div></div>
     <div class="kpi"><div class="kpi-label">Total avk.</div><div class="kpi-val">—</div></div>
     <div class="kpi"><div class="kpi-label">CAGR (realiserad)</div><div class="kpi-val">—</div></div>
+    <div class="kpi"><div class="kpi-label">Veckor</div><div class="kpi-val">—</div></div>
   </div>
 
   <div class="signals">
     <div class="signal-box buy">
       <h3>Köp</h3>
-      <span style="color:#888">Inga</span>
+      <div class="ticker">CLAS-B.ST</div>
     </div>
     <div class="signal-box sell">
       <h3>Sälj</h3>
-      <span style="color:#888">Inga</span>
+      <div class="ticker">RVRC.ST</div>
     </div>
     <div class="signal-box hold">
       <h3>Behåll</h3>
-      <div class="ticker">ATT.ST</div><div class="ticker">BOL.ST</div><div class="ticker">CLA-B.ST</div><div class="ticker">FMM-B.ST</div><div class="ticker">HANZA.ST</div><div class="ticker">HOFI.ST</div><div class="ticker">LUG.ST</div><div class="ticker">RVRC.ST</div><div class="ticker">SAND.ST</div><div class="ticker">SCST.ST</div>
+      <div class="ticker">ATT.ST</div><div class="ticker">BOL.ST</div><div class="ticker">CLA-B.ST</div><div class="ticker">FMM-B.ST</div><div class="ticker">HANZA.ST</div><div class="ticker">HOFI.ST</div><div class="ticker">LUG.ST</div><div class="ticker">SAND.ST</div><div class="ticker">SCST.ST</div>
     </div>
   </div>
 
   <div class="chart-wrap">
     <h2>Portföljutveckling</h2>
-    <p>Verkligt portföljvärde vs OMXSPI (normaliserad till samma startvärde)</p>
+    <p>Indexerad utveckling från 100 — portfölj vs OMXSPI</p>
     <div class="chart-container">
       <canvas id="chart"></canvas>
     </div>
@@ -153,11 +153,11 @@ if (d.labels.length > 0) {
     options: {
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{ display:false },
-        tooltip:{ callbacks:{ label: ctx => " " + ctx.dataset.label + ": " + Math.round(ctx.parsed.y).toLocaleString("sv-SE") + " kr" } } },
+        tooltip:{ callbacks:{           label: function(context) { return " " + context.dataset.label + ": " + context.parsed.y.toFixed(1); } } } },
       scales:{
         x:{ grid:{ display:false }, ticks:{ color:"#888780", font:{ size:11 }, maxTicksLimit:12, maxRotation:0 } },
         y:{ grid:{ color:"rgba(136,135,128,0.15)" }, border:{ display:false },
-             ticks:{ color:"#888780", font:{ size:11 }, callback: v => Math.round(v/1000) + "k" } }
+             ticks:{ color:"#888780", font:{ size:11 }, callback: v => v.toFixed(0) } }
       }
     }
   });
