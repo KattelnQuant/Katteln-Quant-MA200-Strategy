@@ -79,16 +79,16 @@
 
 <main>
   <div class="meta">
-    <span>Uppdaterad: 2026-05-01 18:51</span>
+    <span>Uppdaterad: 2026-05-01 19:27</span>
     <span class="regime" style="color:#2d6e2d;">BULL</span>
     <span>Universum: 271 bolag</span>
   </div>
 
   <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Veckans avk.</div><div class="kpi-val">—</div></div>
-    <div class="kpi"><div class="kpi-label">Total avk.</div><div class="kpi-val">—</div></div>
-    <div class="kpi"><div class="kpi-label">CAGR (realiserad)</div><div class="kpi-val">—</div></div>
-    <div class="kpi"><div class="kpi-label">Veckor</div><div class="kpi-val">—</div></div>
+    <div class="kpi"><div class="kpi-label">Veckans avk.</div><div class="kpi-val">-6.8%</div></div>
+    <div class="kpi"><div class="kpi-label">Total avk.</div><div class="kpi-val">-6.8%</div></div>
+    <div class="kpi"><div class="kpi-label">CAGR (realiserad)</div><div class="kpi-val">-0.1%</div></div>
+    <div class="kpi"><div class="kpi-label">Veckor</div><div class="kpi-val">4</div></div>
   </div>
 
   <div class="signals" style="margin-bottom:16px;">
@@ -270,7 +270,7 @@ if (sessionStorage.getItem("auth") === "1") {
   document.getElementById("lock").style.display = "none";
 }
 
-const d = {"labels": [], "portfolio": [], "index": []};
+const d = {"labels": ["1970-01-01", "1970-01-01", "1970-01-01", "2026-05-01"], "portfolio": [100.0, 100.0, 100.0, 93.2], "index": [null, null, null, 280.45]};
 if (d.labels.length > 0) {
   new Chart(document.getElementById("chart"), {
     type: "line",
